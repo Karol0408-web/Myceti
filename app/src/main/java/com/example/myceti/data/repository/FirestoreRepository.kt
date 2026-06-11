@@ -102,6 +102,31 @@ class FirestoreRepository {
         }
     }
 
+    suspend fun guardarCodigoBarras(codigo: String): Result<Unit> {
+        val uid = auth.currentUser?.uid ?: return Result.failure(Exception("No autenticado"))
+        return try {
+            db.collection("usuarios").document(uid)
+                .update("codigoBarras", codigo).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun subirFotoPerfil(imageBytes: ByteArray): Result<String> {
+        val uid = auth.currentUser?.uid ?: return Result.failure(Exception("No autenticado"))
+        return try {
+            val ref = storage.reference.child("fotos/$uid/perfil.jpg")
+            ref.putBytes(imageBytes).await()
+            val url = ref.downloadUrl.await().toString()
+            db.collection("usuarios").document(uid)
+                .update("fotoUrl", url).await()
+            Result.success(url)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 }
 
 

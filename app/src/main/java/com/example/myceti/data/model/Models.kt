@@ -7,7 +7,8 @@ data class Usuario(
     val noRegistro: String = "",
     val grupo: String = "",
     val plantel: String = "",
-    val fotoUrl: String = ""
+    val fotoUrl: String = "",
+    val codigoBarras: String = ""
 )
 
 data class Clase(

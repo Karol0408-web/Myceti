@@ -5,5 +5,7 @@ import com.example.myceti.data.repository.FirestoreRepository
 
 class CredencialViewModel : ViewModel() {
     private val repo = FirestoreRepository()
+
+    suspend fun subirFoto(bytes: ByteArray) = repo.subirFotoPerfil(bytes)
     suspend fun getUsuario() = repo.getUsuarioActual()
 }

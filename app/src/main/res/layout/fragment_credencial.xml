@@ -71,10 +71,16 @@
                 android:textColor="#99FFFFFF"
                 android:textSize="9sp"/>
 
-            <View
-                android:layout_width="160dp"
-                android:layout_height="28dp"
-                android:background="@drawable/barcode_drawable" android:layout_marginTop="10dp"/>
+            <TextView
+                android:id="@+id/tv_codigo_barras"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:fontFamily="monospace"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                android:text=""/>
 
         </LinearLayout>
     </LinearLayout>
