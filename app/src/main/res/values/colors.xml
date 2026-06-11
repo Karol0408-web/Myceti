@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="ceti_navy">#1A3A6A</color>
+    <color name="ceti_blue">#4A6FA5</color>
+    <color name="ceti_accent">#4A90D9</color>
+    <color name="ceti_red">#C0392B</color>
+    <color name="ceti_orange">#E05C2A</color>
+    <color name="background_gray">#F0EDE8</color>
+    <color name="white">#FFFFFF</color>
+    <color name="text_dark">#111111</color>
+    <color name="text_gray">#888888</color>
 </resources>
