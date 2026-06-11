@@ -42,7 +42,7 @@ class ScannerActivity : AppCompatActivity() {
                     .setTitle("Permiso de cámara requerido")
                     .setMessage("Para escanear tu credencial necesitas activar el permiso de cámara en Configuración.")
                     .setPositiveButton("Ir a Configuración") { _, _ ->
-                        startActivity(android.content.Intent(
+                        startActivity(Intent(
                             android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                             android.net.Uri.fromParts("package", packageName, null)
                         ))
@@ -84,16 +84,22 @@ class ScannerActivity : AppCompatActivity() {
                     it.setAnalyzer(cameraExecutor, BarcodeAnalyzer { resultado ->
                         if (!yaProcesado) {
                             yaProcesado = true
-                            // Guardar en Firestore y devolver resultado
+
+                            // Guardar en Firestore y validar si fue exitoso
                             lifecycleScope.launch {
-                                repo.guardarCodigoBarras(resultado)
+                                val guardado = repo.guardarCodigoBarras(resultado)
+
                                 runOnUiThread {
-                                    Toast.makeText(this@ScannerActivity,
-                                        "¡Credencial escaneada!", Toast.LENGTH_SHORT).show()
-                                    // Devolver el código al Fragment
-                                    val intent = Intent().putExtra("codigoBarras", resultado)
-                                    setResult(Activity.RESULT_OK, intent)
-                                    finish()
+                                    if (guardado.isSuccess) {
+                                        Toast.makeText(this@ScannerActivity, "¡Credencial escaneada y guardada!", Toast.LENGTH_SHORT).show()
+                                        // Devolver el código al Fragment
+                                        val intent = Intent().putExtra("codigoBarras", resultado)
+                                        setResult(Activity.RESULT_OK, intent)
+                                        finish()
+                                    } else {
+                                        Toast.makeText(this@ScannerActivity, "Error al guardar en Firebase", Toast.LENGTH_LONG).show()
+                                        yaProcesado = false // Permite reintentar si falló la red
+                                    }
                                 }
                             }
                         }
