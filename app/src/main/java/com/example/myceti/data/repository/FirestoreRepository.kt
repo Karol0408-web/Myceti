@@ -116,13 +116,20 @@ class FirestoreRepository {
     suspend fun subirFotoPerfil(imageBytes: ByteArray): Result<String> {
         val uid = auth.currentUser?.uid ?: return Result.failure(Exception("No autenticado"))
         return try {
-            val ref = storage.reference.child("fotos/$uid/perfil.jpg")
-            ref.putBytes(imageBytes).await()
-            val url = ref.downloadUrl.await().toString()
+            // Convertir bytes a Base64
+            val base64String = android.util.Base64.encodeToString(
+                imageBytes,
+                android.util.Base64.NO_WRAP
+            )
+
+            // Guardar en Firestore (campo fotoBase64)
             db.collection("usuarios").document(uid)
-                .update("fotoUrl", url).await()
-            Result.success(url)
+                .update("fotoBase64", base64String)
+                .await()
+
+            Result.success(base64String)
         } catch (e: Exception) {
+            android.util.Log.e("STORAGE", "Error en subirFotoPerfil: ${e.message}")
             Result.failure(e)
         }
     }

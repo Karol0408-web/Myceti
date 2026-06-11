@@ -7,6 +7,7 @@ data class Usuario(
     val noRegistro: String = "",
     val grupo: String = "",
     val plantel: String = "",
+    val fotoBase64: String = "",
     val fotoUrl: String = "",
     val codigoBarras: String = ""
 )

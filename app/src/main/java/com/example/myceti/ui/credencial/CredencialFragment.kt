@@ -3,24 +3,27 @@ package com.example.myceti.ui.credencial
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.myceti.R
 import com.example.myceti.databinding.FragmentCredencialBinding
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.common.BitMatrix
 import kotlinx.coroutines.launch
-import java.io.ByteArrayOutputStream
 
 class CredencialFragment : Fragment() {
 
@@ -28,18 +31,16 @@ class CredencialFragment : Fragment() {
     private val binding get() = _binding!!
     private val vm: CredencialViewModel by viewModels()
 
-    // Recibe el string del escáner, lo pinta en texto y genera las barras visuales
+    // Launcher para escáner
     private val scannerLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val codigo = result.data?.getStringExtra("codigoBarras") ?: return@registerForActivityResult
 
-            // Mostrar texto plano
             binding.tvCodigoBarras.text = codigo
             binding.tvCodigoBarras.visibility = View.VISIBLE
 
-            // Generar y pintar las barras gráficas
             try {
                 val bitmapBarras = generarCodigoBarras(codigo)
                 binding.ivCodigoBarrasVisual.setImageBitmap(bitmapBarras)
@@ -50,21 +51,19 @@ class CredencialFragment : Fragment() {
         }
     }
 
-    // Captura la foto de la cámara, la muestra y la manda al ViewModel
+    // Launcher para cámara
     private val camaraLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val foto = result.data?.extras?.get("data") as? Bitmap ?: return@registerForActivityResult
 
-            // Mostrar localmente de inmediato de forma circular
+            // Mostrar localmente
             Glide.with(this).load(foto).circleCrop().into(binding.ivFoto)
 
-            // Subir al Storage a través del ViewModel
+            // Convertir a Base64 y subir
             lifecycleScope.launch {
-                val stream = ByteArrayOutputStream()
-                foto.compress(Bitmap.CompressFormat.JPEG, 80, stream)
-                vm.subirFoto(stream.toByteArray())
+                vm.subirFotoPerfil(foto)
             }
         }
     }
@@ -77,23 +76,37 @@ class CredencialFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Cargar datos guardados en Firestore al abrir la pantalla
+        // Cargar datos del usuario
         lifecycleScope.launch {
             val usuario = vm.getUsuario()
             usuario?.let {
                 binding.tvNombreCredencial.text = it.nombre.uppercase()
                 binding.tvNoRegistro.text = it.noRegistro
 
-                // Cargar foto si ya existe en Firebase Storage
-                if (it.fotoUrl.isNotEmpty()) {
-                    Glide.with(this@CredencialFragment)
-                        .load(it.fotoUrl)
-                        .placeholder(R.drawable.ic_person)
-                        .circleCrop()
-                        .into(binding.ivFoto)
+                // ✅ CORRECCIÓN: Cargar foto desde Base64 correctamente
+                if (it.fotoBase64.isNotEmpty()) {
+                    try {
+                        val imageBytes = Base64.decode(it.fotoBase64, Base64.NO_WRAP)
+                        val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+
+                        Glide.with(this@CredencialFragment)
+                            .load(bitmap)
+                            .placeholder(R.drawable.ic_person)
+                            .circleCrop()
+                            .into(binding.ivFoto)
+                    } catch (e: Exception) {
+                        // Fallback: intentar como URL normal
+                        if (it.fotoUrl.isNotEmpty()) {
+                            Glide.with(this@CredencialFragment)
+                                .load(it.fotoUrl)
+                                .placeholder(R.drawable.ic_person)
+                                .circleCrop()
+                                .into(binding.ivFoto)
+                        }
+                    }
                 }
 
-                // Cargar código de barras si ya existe en Firestore
+                // Cargar código de barras
                 if (it.codigoBarras.isNotEmpty()) {
                     binding.tvCodigoBarras.text = it.codigoBarras
                     binding.tvCodigoBarras.visibility = View.VISIBLE
@@ -109,21 +122,18 @@ class CredencialFragment : Fragment() {
             }
         }
 
-        // Evento para abrir la cámara de escaneo
+        // Botón escanear
         binding.btnEscanear.setOnClickListener {
-            scannerLauncher.launch(
-                Intent(requireContext(), ScannerActivity::class.java)
-            )
+            scannerLauncher.launch(Intent(requireContext(), ScannerActivity::class.java))
         }
 
-        // Evento para cambiar la foto de perfil
+        // Foto de perfil-click
         binding.ivFoto.setOnClickListener {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             camaraLauncher.launch(intent)
         }
     }
 
-    // Transforma cualquier String en un código de barras gráfico de tipo CODE_128
     private fun generarCodigoBarras(codigo: String): Bitmap {
         val bitMatrix: BitMatrix = MultiFormatWriter().encode(
             codigo,
