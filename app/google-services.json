@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "492838946987",
+    "project_id": "myceti",
+    "storage_bucket": "myceti.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:492838946987:android:f47b3ab3d67619407c4fee",
+        "android_client_info": {
+          "package_name": "com.example.myceti"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQ42tBV-8QjeOC46M0Dp85ZBU5D44Oq2M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
