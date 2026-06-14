@@ -7,6 +7,10 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Base64
+import java.io.ByteArrayOutputStream
 
 class FirestoreRepository {
     private val db = FirebaseFirestore.getInstance()
@@ -134,8 +138,139 @@ class FirestoreRepository {
         }
     }
 
-}
+    // ── Apuntes ───────────────────────────────────────────────────────────
 
+    // ── Apuntes (Migrados a Base64) ───────────────────────────────────────
+
+    private fun comprimirImagen(imageBytes: ByteArray): ByteArray {
+
+        val bitmap = BitmapFactory.decodeByteArray(
+            imageBytes,
+            0,
+            imageBytes.size
+        )
+
+        var ancho = bitmap.width
+        var alto = bitmap.height
+
+        // Reducir tamaño máximo a 800px
+        if (ancho > 800 || alto > 800) {
+
+            val ratio = ancho.toFloat() / alto.toFloat()
+
+            if (ratio > 1) {
+                ancho = 800
+                alto = (800 / ratio).toInt()
+            } else {
+                alto = 800
+                ancho = (800 * ratio).toInt()
+            }
+        }
+
+        val bitmapReducido = Bitmap.createScaledBitmap(
+            bitmap,
+            ancho,
+            alto,
+            true
+        )
+
+        val baos = ByteArrayOutputStream()
+
+        bitmapReducido.compress(
+            Bitmap.CompressFormat.JPEG,
+            25,
+            baos
+        )
+
+        return baos.toByteArray()
+    }
+
+
+    suspend fun subirApunte(
+        imageBytes: ByteArray,
+        materia: String
+    ): Result<Apunte> {
+
+        val uid = auth.currentUser?.uid
+            ?: return Result.failure(Exception("No autenticado"))
+
+        return try {
+
+            // Comprimir imagen
+            val imagenComprimida =
+                comprimirImagen(imageBytes)
+
+            // Convertir a Base64
+            val base64String =
+                Base64.encodeToString(
+                    imagenComprimida,
+                    Base64.NO_WRAP
+                )
+
+            // Verificar tamaño
+            if (base64String.length > 1000000) {
+
+                return Result.failure(
+                    Exception(
+                        "La imagen sigue siendo demasiado grande"
+                    )
+                )
+            }
+
+            val apunte = Apunte(
+                materia = materia,
+                imageBase64 = base64String,
+                uid = uid,
+                fecha = com.google.firebase.Timestamp.now()
+            )
+
+            val docRef = db.collection("apuntes")
+                .add(apunte)
+                .await()
+
+            Result.success(
+                apunte.copy(id = docRef.id)
+            )
+
+        } catch (e: Exception) {
+
+            android.util.Log.e(
+                "APUNTES",
+                "Error al subir apunte: ${e.message}"
+            )
+
+            Result.failure(e)
+        }
+    }
+
+    suspend fun getApuntes(): Result<List<Apunte>> {
+        val uid = auth.currentUser?.uid ?: return Result.failure(Exception("No autenticado"))
+        return try {
+            val snap = db.collection("apuntes")
+                .whereEqualTo("uid", uid)
+                .orderBy("fecha", Query.Direction.DESCENDING)
+                .get().await()
+
+            val lista = snap.documents.mapNotNull { doc ->
+                doc.toObject(Apunte::class.java)?.copy(id = doc.id)
+            }
+            Result.success(lista)
+        } catch (e: Exception) {
+            android.util.Log.e("APUNTES", "Error al obtener apuntes: ${e.message}")
+            Result.failure(e)
+        }
+    }
+    suspend fun eliminarApunte(id: String): Result<Unit> {
+        return try {
+            db.collection("apuntes").document(id).delete().await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
+}
 
 
 

@@ -17,5 +17,9 @@
         android:id="@+id/horarioFragment"
         android:name="com.example.myceti.ui.horario.HorarioFragment"
         android:label="Horario" />
+    <fragment
+        android:id="@+id/apuntesFragment"
+        android:name="com.example.myceti.ui.apuntes.ApuntesFragment"
+        android:label="Apuntes"/>
 
 </navigation>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="110dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="4dp">
+
+    <ImageView
+        android:id="@+id/iv_apunte"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:background="#D8E8D8"
+        android:layout_margin="2dp"/>
+
+    <ImageButton
+        android:id="@+id/btn_eliminar"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_gravity="top|end"
+        android:layout_margin="6dp"
+        android:src="@android:drawable/ic_menu_delete"
+        android:background="#CC000000"
+        app:tint="#FFFFFF"
+        android:contentDescription="Eliminar apunte"
+        android:padding="4dp"/>
+
+
+</FrameLayout>

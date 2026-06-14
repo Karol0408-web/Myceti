@@ -1,5 +1,7 @@
 package com.example.myceti.data.model
 
+import com.google.firebase.Timestamp
+
 data class Usuario(
     val uid: String = "",
     val nombre: String = "",
@@ -22,5 +24,14 @@ data class Clase(
     val horaFin: String = "",      // "08:40"
     val diasSemana: List<Long> = emptyList() // 2=Lun,3=Mar,4=Mié,5=Jue,6=Vie (Calendar.DAY_OF_WEEK)
 )
+
+data class Apunte(
+    val id: String = "",
+    val materia: String = "",
+    val imageBase64: String = "",
+    val uid: String = "", // <-- ASEGÚRATE DE QUE SE LLAME EXACTAMENTE "uid"
+    val fecha: Timestamp? = null
+)
+
 
 
