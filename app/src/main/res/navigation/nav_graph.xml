@@ -21,5 +21,10 @@
         android:id="@+id/apuntesFragment"
         android:name="com.example.myceti.ui.apuntes.ApuntesFragment"
         android:label="Apuntes"/>
+    <fragment
+        android:id="@+id/alarmasFragment"
+        android:name="com.example.myceti.ui.alarmas.AlarmasFragment"
+        android:label="Alarmas"/>
+
 
 </navigation>
