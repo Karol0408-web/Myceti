@@ -269,6 +269,21 @@ class FirestoreRepository {
         }
     }
 
+    // ── Comunicados ───────────────────────────────────────────────────────
+
+    suspend fun getComunicados(): Result<List<Comunicado>> {
+        return try {
+            val snap = db.collection("comunicados")
+                .orderBy("fecha", Query.Direction.DESCENDING)
+                .limit(10)
+                .get().await()
+            val lista = snap.documents.mapNotNull { it.toObject(Comunicado::class.java)?.copy(id = it.id) }
+            Result.success(lista)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 
 }
 

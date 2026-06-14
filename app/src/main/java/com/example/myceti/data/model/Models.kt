@@ -33,5 +33,12 @@ data class Apunte(
     val fecha: Timestamp? = null
 )
 
+data class Comunicado(
+    val id: String = "",
+    val titulo: String = "",
+    val descripcion: String = "",
+    val fecha: com.google.firebase.Timestamp? = null
+)
+
 
 
