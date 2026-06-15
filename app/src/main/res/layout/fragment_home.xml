@@ -5,26 +5,28 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!-- Header mejorado -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/ceti_blue"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="20dp"
+        android:paddingTop="32dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Bienvenid@"
             android:textColor="#CCFFFFFF"
-            android:textSize="13sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tv_nombre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:textSize="22sp"
+            android:textSize="24sp"
             android:textStyle="bold"
             android:text="—" />
 
@@ -43,6 +45,7 @@
             android:src="@drawable/ic_logout"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_gravity="end"
+            android:layout_marginTop="-48dp"
             android:contentDescription="Cerrar sesión"
             app:tint="@color/white" />
     </LinearLayout>
@@ -52,12 +55,14 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@color/background_gray">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
 
+            <!-- Sección Acceso rápido -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,8 +70,9 @@
                 android:textColor="@color/text_gray"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="12dp"/>
 
+            <!-- Grid 2x2 mejorado -->
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,26 +80,32 @@
                 android:rowCount="2"
                 android:useDefaultMargins="true">
 
+                <!-- Tarjeta 1: Credencial -->
                 <LinearLayout
+                    android:id="@+id/card_credencial"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    android:layout_margin="5dp"
+                    android:layout_margin="6dp"
                     android:background="@drawable/bg_card"
                     android:orientation="vertical"
-                    android:padding="14dp"
-                    android:onClick="dummy">
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="📋"
-                        android:textSize="24sp"/>
+                        android:text="🎓"
+                        android:textSize="32sp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Credencial"
                         android:textStyle="bold"
-                        android:textSize="13sp"/>
+                        android:textSize="14sp"
+                        android:layout_marginTop="8dp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -102,25 +114,32 @@
                         android:textColor="@color/text_gray"/>
                 </LinearLayout>
 
+                <!-- Tarjeta 2: Horario -->
                 <LinearLayout
+                    android:id="@+id/card_horario"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    android:layout_margin="5dp"
+                    android:layout_margin="6dp"
                     android:background="@drawable/bg_card"
                     android:orientation="vertical"
-                    android:padding="14dp">
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="📅"
-                        android:textSize="24sp"/>
+                        android:textSize="32sp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Horario"
                         android:textStyle="bold"
-                        android:textSize="13sp"/>
+                        android:textSize="14sp"
+                        android:layout_marginTop="8dp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -129,34 +148,45 @@
                         android:textColor="@color/text_gray"/>
                 </LinearLayout>
 
+                <!-- Tarjeta 3: Planteles -->
+
+
+                <!-- Tarjeta 4: Recordatorios -->
                 <LinearLayout
+                    android:id="@+id/card_recordatorios"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    android:layout_margin="5dp"
+                    android:layout_margin="6dp"
                     android:background="@drawable/bg_card"
                     android:orientation="vertical"
-                    android:padding="14dp">
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🔔"
-                        android:textSize="24sp"/>
+                        android:text="⏰"
+                        android:textSize="32sp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Recordatorios"
                         android:textStyle="bold"
-                        android:textSize="13sp"/>
-                    <TextView android:layout_width="wrap_content"
+                        android:textSize="14sp"
+                        android:layout_marginTop="8dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Exámenes y clases"
                         android:textSize="11sp"
                         android:textColor="@color/text_gray"/>
                 </LinearLayout>
-
             </GridLayout>
 
+            <!-- Sección Notificaciones -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -164,14 +194,15 @@
                 android:textColor="@color/text_gray"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="12dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_comunicados"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"/>
+
 
         </LinearLayout>
     </ScrollView>
