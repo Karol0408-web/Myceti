@@ -83,7 +83,7 @@ class CredencialFragment : Fragment() {
                 binding.tvNombreCredencial.text = it.nombre.uppercase()
                 binding.tvNoRegistro.text = it.noRegistro
 
-                // ✅ CORRECCIÓN: Cargar foto desde Base64 correctamente
+                //  Cargar foto desde Base64 correctamente
                 if (it.fotoBase64.isNotEmpty()) {
                     try {
                         val imageBytes = Base64.decode(it.fotoBase64, Base64.NO_WRAP)
