@@ -18,7 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="HORARIO"
-            android:textSize="22sp"
+            android:fontFamily="@font/weghorst_italic"
+            android:textSize="28sp"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:gravity="center"/>

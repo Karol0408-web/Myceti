@@ -9,12 +9,13 @@
         android:background="@color/ceti_blue"
         android:orientation="vertical"
         android:gravity="center"
-        android:padding="16dp">
+        android:padding="30dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ALARMA DE CLASE"
-            android:textSize="22sp"
+            android:fontFamily="@font/weghorst_italic"
+            android:textSize="28sp"
             android:textStyle="bold"
             android:textColor="@color/white"/>
         <TextView
@@ -24,7 +25,7 @@
             android:textColor="#CCFFFFFF"
             android:textSize="12sp"
             android:gravity="center"
-            android:layout_marginTop="4dp"/>
+            android:layout_marginTop="20dp"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,6 +42,7 @@
             android:textColor="@color/ceti_navy"
             android:gravity="center"
             android:layout_marginTop="16dp"
+            android:fontFamily="@font/honfleur_heavy"
             android:text="--:--"/>
         <TextView
             android:id="@+id/tv_fecha"

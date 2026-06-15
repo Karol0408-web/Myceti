@@ -17,7 +17,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="GALERÍA DE APUNTES"
-            android:textSize="22sp"
+            android:fontFamily="@font/weghorst_italic"
+            android:textSize="28sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
             android:letterSpacing="0.05"/>
