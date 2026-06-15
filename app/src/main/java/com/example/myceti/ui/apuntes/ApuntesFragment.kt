@@ -43,16 +43,22 @@ class ApuntesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ApuntesAdapter { apunte ->
-            lifecycleScope.launch {
-                vm.eliminarApunte(apunte.id).onSuccess {
-                    Snackbar.make(binding.root, "Apunte eliminado", Snackbar.LENGTH_SHORT).show()
-                    cargarApuntes()
-                }.onFailure {
-                    Snackbar.make(binding.root, "Error al eliminar: ${it.message}", Snackbar.LENGTH_LONG).show()
+        adapter = ApuntesAdapter(
+            onEliminar = { apunte ->
+                lifecycleScope.launch {
+                    vm.eliminarApunte(apunte.id).onSuccess {
+                        Snackbar.make(binding.root, "Apunte eliminado", Snackbar.LENGTH_SHORT).show()
+                        cargarApuntes()
+                    }.onFailure {
+                        Snackbar.make(binding.root, "Error al eliminar: ${it.message}", Snackbar.LENGTH_LONG).show()
+                    }
                 }
+            },
+            onVerImagen = { base64 ->
+                ImagenFullscreenDialog.newInstance(base64)
+                    .show(parentFragmentManager, "imagen_fullscreen")
             }
-        }
+        )
 
         // GridLayoutManager de 3 columnas; los headers ocupan las 3
         val gridLayout = GridLayoutManager(requireContext(), 3)

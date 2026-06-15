@@ -16,7 +16,8 @@ sealed class ApunteItem {
 }
 
 class ApuntesAdapter(
-    private val onEliminar: (Apunte) -> Unit
+    private val onEliminar: (Apunte) -> Unit,
+    private val onVerImagen: (String) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items: List<ApunteItem> = emptyList()
@@ -45,7 +46,6 @@ class ApuntesAdapter(
 
     override fun getItemCount() = items.size
 
-    // ViewHolder Header
     inner class HeaderVH(private val b: ItemHeaderMateriaBinding) : RecyclerView.ViewHolder(b.root) {
         fun bind(h: ApunteItem.Header) {
             b.tvNombreMateria.text = h.materia
@@ -53,7 +53,6 @@ class ApuntesAdapter(
         }
     }
 
-    // ViewHolder Apunte
     inner class ApunteVH(private val b: ItemApunteBinding) : RecyclerView.ViewHolder(b.root) {
         fun bind(entry: ApunteItem.ApunteEntry) {
             val a = entry.apunte
@@ -70,6 +69,13 @@ class ApuntesAdapter(
                 }
             } else {
                 b.ivApunte.setImageResource(R.drawable.ic_person)
+            }
+
+            // Ver imagen en grande
+            b.ivApunte.setOnClickListener {
+                if (!a.imageBase64.isNullOrEmpty()) {
+                    onVerImagen(a.imageBase64)
+                }
             }
 
             b.btnEliminar.setOnClickListener {
