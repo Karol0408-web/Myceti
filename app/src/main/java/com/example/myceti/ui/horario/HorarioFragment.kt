@@ -85,7 +85,8 @@ class HorarioFragment : Fragment() {
                     } else {
                         binding.tvError.visibility = View.GONE
                     }
-                    adapter.submitList(clases)
+                    adapter.submitList(clases.sortedBy { it.horaInicio })
+
                 }
                 .onFailure { e ->
                     android.util.Log.e("HORARIO", "Error: ${e.message}")
