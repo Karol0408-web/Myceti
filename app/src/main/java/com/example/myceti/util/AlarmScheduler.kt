@@ -10,8 +10,12 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.MyCETIApp
 import com.example.myceti.R
+import com.example.myceti.data.model.AlarmaPersonalizada
 import com.example.myceti.data.model.Clase
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 object AlarmScheduler {
 
@@ -66,6 +70,27 @@ object AlarmScheduler {
                 PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
             )
             pending?.let { alarmManager.cancel(it) }
+        }
+    }
+
+    fun programarAlarmaPersonalizada(context: Context, alarma: AlarmaPersonalizada, triggerMillis: Long) {
+        val alarmManager = context.getSystemService(AlarmManager::class.java)
+        val intent = Intent(context, AlarmReceiver::class.java).apply {
+            putExtra("materia", alarma.titulo)
+            putExtra("salon", "")
+            putExtra("hora", SimpleDateFormat("HH:mm", Locale.getDefault())
+                .format(Date(triggerMillis)))
+        }
+        val pending = PendingIntent.getBroadcast(
+            context, alarma.id.hashCode(), intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (alarmManager.canScheduleExactAlarms()) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerMillis, pending)
+            }
+        } else {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerMillis, pending)
         }
     }
 }

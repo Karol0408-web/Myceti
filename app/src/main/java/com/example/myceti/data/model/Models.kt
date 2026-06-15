@@ -40,5 +40,10 @@ data class Comunicado(
     val fecha: com.google.firebase.Timestamp? = null
 )
 
-
+data class AlarmaPersonalizada(
+    val id: String = "",
+    val titulo: String = "",
+    val fecha: Timestamp? = null,
+    val uid: String = ""
+)
 

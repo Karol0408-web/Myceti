@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,38 +28,89 @@
             android:gravity="center"
             android:layout_marginTop="20dp"/>
     </LinearLayout>
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical"
         android:background="@color/background_gray">
-        <TextView
-            android:id="@+id/tv_hora"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="48sp"
-            android:textStyle="bold"
-            android:textColor="@color/ceti_navy"
-            android:gravity="center"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/honfleur_heavy"
-            android:text="--:--"/>
-        <TextView
-            android:id="@+id/tv_fecha"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:textColor="@color/text_gray"
-            android:gravity="center"
-            android:layout_marginBottom="16dp"/>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_alarmas"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:padding="14dp"
-            android:nestedScrollingEnabled="false"/>
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Reloj -->
+            <TextView
+                android:id="@+id/tv_hora"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="48sp"
+                android:textStyle="bold"
+                android:textColor="@color/ceti_navy"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/honfleur_heavy"
+                android:text="--:--"/>
+
+            <TextView
+                android:id="@+id/tv_fecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="@color/text_gray"
+                android:gravity="center"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Título clases del horario -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CLASES DE HOY"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_gray"
+                android:layout_marginStart="14dp"
+                android:layout_marginBottom="6dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_alarmas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="14dp"
+                android:nestedScrollingEnabled="false"/>
+
+            <!-- Título alarmas personalizadas -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MIS ALARMAS"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_gray"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="6dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_alarmas_personalizadas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="14dp"
+                android:nestedScrollingEnabled="false"/>
+
+            <!-- Botón agregar alarma -->
+            <Button
+                android:id="@+id/btn_agregar_alarma"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="+ AGREGAR ALARMA"
+                android:backgroundTint="@color/ceti_navy"
+                android:textColor="@color/white"
+                android:layout_margin="16dp"
+                style="@style/Widget.MaterialComponents.Button"/>
+
+        </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>

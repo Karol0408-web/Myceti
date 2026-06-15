@@ -10,6 +10,7 @@ import java.util.UUID
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.GoogleAuthProvider
 import java.io.ByteArrayOutputStream
 
@@ -311,6 +312,44 @@ class FirestoreRepository {
                 .get().await()
             val lista = snap.documents.mapNotNull { it.toObject(Comunicado::class.java)?.copy(id = it.id) }
             Result.success(lista)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
+    //----Alarmas----------------------------------------------------------
+    suspend fun guardarAlarma(titulo: String, fecha: Timestamp): Result<AlarmaPersonalizada> {
+        val uid = auth.currentUser?.uid ?: return Result.failure(Exception("No autenticado"))
+        return try {
+            val alarma = AlarmaPersonalizada(titulo = titulo, fecha = fecha, uid = uid)
+            val docRef = db.collection("alarmas").add(alarma).await()
+            Result.success(alarma.copy(id = docRef.id))
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun getAlarmas(): Result<List<AlarmaPersonalizada>> {
+        val uid = auth.currentUser?.uid ?: return Result.failure(Exception("No autenticado"))
+        return try {
+            val snap = db.collection("alarmas")
+                .whereEqualTo("uid", uid)
+                .orderBy("fecha", Query.Direction.ASCENDING)
+                .get().await()
+            val lista = snap.documents.mapNotNull {
+                it.toObject(AlarmaPersonalizada::class.java)?.copy(id = it.id)
+            }
+            Result.success(lista)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun eliminarAlarma(id: String): Result<Unit> {
+        return try {
+            db.collection("alarmas").document(id).delete().await()
+            Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
         }
