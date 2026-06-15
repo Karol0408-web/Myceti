@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
     implementation(libs.firebase.messaging)
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
 
     // CameraX
     implementation("com.google.guava:guava:33.2.1-android")

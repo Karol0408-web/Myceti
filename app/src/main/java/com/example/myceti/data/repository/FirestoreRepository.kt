@@ -10,6 +10,7 @@ import java.util.UUID
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
+import com.google.firebase.auth.GoogleAuthProvider
 import java.io.ByteArrayOutputStream
 
 class FirestoreRepository {
@@ -44,6 +45,37 @@ class FirestoreRepository {
             val uid = result.user!!.uid
             val snap = db.collection("usuarios").document(uid).get().await()
             val usuario = snap.toObject(Usuario::class.java)!!
+            Result.success(usuario)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun loginConGoogle(idToken: String): Result<Usuario> {
+        return try {
+            val credential = GoogleAuthProvider.getCredential(idToken, null)
+            val result = auth.signInWithCredential(credential).await()
+            val uid = result.user!!.uid
+            val nombre = result.user!!.displayName ?: "Usuario"
+            val correo = result.user!!.email ?: ""
+
+            // Verificar si ya existe en Firestore
+            val snap = db.collection("usuarios").document(uid).get().await()
+            val usuario = if (snap.exists()) {
+                snap.toObject(Usuario::class.java)!!
+            } else {
+                // Crear usuario nuevo con datos de Google
+                val nuevo = Usuario(
+                    uid = uid,
+                    nombre = nombre,
+                    correo = correo,
+                    noRegistro = "",
+                    grupo = "",
+                    plantel = "Colomos"
+                )
+                db.collection("usuarios").document(uid).set(nuevo).await()
+                nuevo
+            }
             Result.success(usuario)
         } catch (e: Exception) {
             Result.failure(e)

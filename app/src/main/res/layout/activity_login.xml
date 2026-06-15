@@ -10,7 +10,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.2">
+        android:layout_weight="1">
 
         <TextView
             android:layout_width="wrap_content"
@@ -20,18 +20,18 @@
             android:textStyle="bold"
             android:textColor="@color/white"
             android:layout_gravity="bottom|start"
-            android:layout_marginStart="20dp"
-            android:layout_marginBottom="2dp"/>
+            android:layout_marginStart="24dp"
+            android:layout_marginBottom="16dp"/>
     </FrameLayout>
 
     <!-- Tarjeta blanca inferior con bordes redondeados -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="1.1"
         android:background="@drawable/bg_rounded_top"
         android:orientation="vertical"
-        android:padding="30dp">
+        android:padding="22dp">
 
         <!-- Campo No. Registro -->
         <LinearLayout
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingBottom="12dp">
+            android:layout_marginBottom="12dp">
 
             <ImageView
                 android:layout_width="22dp"
@@ -58,10 +58,7 @@
                 android:imeOptions="actionNext"/>
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DDDDDD"/>
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD"/>
 
         <!-- Campo Contraseña -->
         <LinearLayout
@@ -69,8 +66,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingVertical="12dp"
-            android:layout_marginTop="4dp">
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp">
 
             <ImageView
                 android:layout_width="22dp"
@@ -89,40 +86,49 @@
                 android:imeOptions="actionDone"/>
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DDDDDD"/>
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD"/>
 
-        <!-- ✅ Opción Recordar datos (nuevo) -->
+        <!-- Recordar datos -->
         <CheckBox
             android:id="@+id/chk_recordar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Recordar datos"
             android:textColor="@color/text_gray"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="8dp"/>
-
-        <!-- ProgressBar (oculto por defecto) -->
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:visibility="gone"/>
+            android:layout_marginTop="12dp"/>
 
         <!-- Botón Iniciar Sesión -->
         <Button
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:text="INICIAR SESIÓN"
             android:backgroundTint="@color/ceti_navy"
             android:textColor="@color/white"
             style="@style/Widget.MaterialComponents.Button"/>
+
+        <!-- Botón Google -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_google"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Iniciar sesión con Google"
+            app:icon="@drawable/ic_google"
+            app:iconGravity="textStart"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#000000"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+        <!-- ProgressBar -->
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="12dp"
+            android:visibility="gone"/>
 
         <!-- Link Crear una cuenta -->
         <TextView
@@ -133,7 +139,6 @@
             android:textColor="@color/ceti_red"
             android:textStyle="bold"
             android:gravity="center"
-            android:layout_marginTop="16dp"
-            android:padding="8dp"/>
+            android:layout_marginTop="20dp"/>
     </LinearLayout>
 </LinearLayout>
