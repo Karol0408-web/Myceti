@@ -25,8 +25,8 @@ class ApuntesFragment : Fragment() {
     private lateinit var adapter: ApuntesAdapter
 
     private val materias = arrayOf(
-        "Inteligencia Artificial", "Bases de Datos",
-        "Desarrollo Móvil", "Cálculo Integral", "Programación", "Otra"
+        "Inteligencia Artificial", "Desarrollo de dispositivos moviles II",
+        "Gestión de servicios de TI", "Hacking Etico", "Ingles", "Otra"
     )
 
     private var filtroActual = "Todos"
@@ -83,9 +83,11 @@ class ApuntesFragment : Fragment() {
         // Chips de filtro
         binding.chipTodos.setOnClickListener { aplicarFiltro("Todos") }
         binding.chipIA.setOnClickListener { aplicarFiltro("Inteligencia Artificial") }
-        binding.chipBD.setOnClickListener { aplicarFiltro("Bases de Datos") }
-        binding.chipCalculo.setOnClickListener { aplicarFiltro("Cálculo Integral") }
-        binding.chipProg.setOnClickListener { aplicarFiltro("Programación") }
+        binding.chipBD.setOnClickListener { aplicarFiltro("Desarrollo de dispositivos moviles II") }
+        binding.chipCalculo.setOnClickListener { aplicarFiltro("Gestión de servicios de TI") }
+        binding.chipProg.setOnClickListener { aplicarFiltro("Hacking Etico") }
+        binding.chipIngles.setOnClickListener { aplicarFiltro("Hacking Etico") }
+
 
         cargarApuntes()
     }
